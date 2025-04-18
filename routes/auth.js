@@ -5,8 +5,9 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
+require('dotenv').config()
 
-const JWT_SECRET = "YUGAL is claim";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 //R1 -- Create user using POST "/api/auth/createuser".With No login 
@@ -49,10 +50,10 @@ async (req, res) => {
       success = true ; // Save user in the database
       res.json({success, authToken});
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'enter a unique email' });
-  }
+     } catch (error) {
+        console.error('Error in /createuser:', error.message, error.stack);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+      }
 
 });
 
